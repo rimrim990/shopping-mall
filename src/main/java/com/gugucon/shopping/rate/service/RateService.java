@@ -7,6 +7,7 @@ import com.gugucon.shopping.member.domain.vo.BirthYearRange;
 import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.order.domain.entity.Order.OrderStatus;
 import com.gugucon.shopping.order.domain.entity.OrderItem;
+import com.gugucon.shopping.rate.domain.RateCreatedEvent;
 import com.gugucon.shopping.order.repository.OrderItemRepository;
 import com.gugucon.shopping.rate.domain.entity.Rate;
 import com.gugucon.shopping.rate.dto.request.RateCreateRequest;
@@ -19,6 +20,7 @@ import com.gugucon.shopping.rate.repository.dto.GroupAverageRateDto;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +31,10 @@ public class RateService {
 
     private static final short MIN_SCORE = 1;
     private static final short MAX_SCORE = 5;
-
-    private final RateStatService rateStatService;
     private final RateRepository rateRepository;
     private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void createRate(final MemberPrincipal principal, final RateCreateRequest request) {
@@ -49,7 +50,7 @@ public class RateService {
                 .build();
 
         rateRepository.save(rate);
-        rateStatService.updateRate(principal, score, orderItem.getProductId());
+        eventPublisher.publishEvent(RateCreatedEvent.from(principal, score, rate.getOrderItem().getProductId()));
     }
 
     public RateResponse getRates(final Long productId) {

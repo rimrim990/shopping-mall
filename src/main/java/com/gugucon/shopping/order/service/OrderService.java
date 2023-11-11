@@ -1,6 +1,5 @@
 package com.gugucon.shopping.order.service;
 
-import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.common.dto.response.PagedResponse;
 import com.gugucon.shopping.common.exception.ErrorCode;
 import com.gugucon.shopping.common.exception.ShoppingException;
@@ -8,31 +7,33 @@ import com.gugucon.shopping.item.domain.entity.CartItem;
 import com.gugucon.shopping.item.domain.entity.Product;
 import com.gugucon.shopping.item.repository.CartItemRepository;
 import com.gugucon.shopping.item.repository.ProductRepository;
+import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.order.domain.entity.Order;
+import com.gugucon.shopping.order.domain.OrderCompletedEvent;
 import com.gugucon.shopping.order.dto.request.OrderPayRequest;
 import com.gugucon.shopping.order.dto.response.OrderDetailResponse;
 import com.gugucon.shopping.order.dto.response.OrderHistoryResponse;
 import com.gugucon.shopping.order.dto.response.OrderPayResponse;
 import com.gugucon.shopping.order.dto.response.OrderResponse;
 import com.gugucon.shopping.order.repository.OrderRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final OrderStatService orderStatService;
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public OrderResponse order(final Long memberId) {
@@ -44,7 +45,8 @@ public class OrderService {
 
     @Transactional
     public void complete(final Order order, final MemberPrincipal principal) {
-        order.getOrderItems().forEach(orderItem -> orderStatService.updateCount(principal, orderItem));
+        order.getOrderItems()
+            .forEach(orderItem -> eventPublisher.publishEvent(OrderCompletedEvent.from(principal, orderItem)));
         cartItemRepository.deleteAllByMemberId(principal.getId());
         order.completePay();
     }
