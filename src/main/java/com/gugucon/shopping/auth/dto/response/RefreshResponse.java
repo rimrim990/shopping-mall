@@ -1,18 +1,20 @@
-package com.gugucon.shopping.member.dto.response;
+package com.gugucon.shopping.auth.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode
 @Getter
-public final class LoginResponse {
+public final class RefreshResponse {
 
     private String accessToken;
 
-    public static LoginResponse from(final String accessToken) {
-        return new LoginResponse(accessToken);
+    public static RefreshResponse from(final String accessToken) {
+        return new RefreshResponse(accessToken);
     }
 }

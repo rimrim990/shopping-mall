@@ -12,6 +12,7 @@ spring:
 jwt:
   secret-key: jwt_secret_key
   expiration: 5000000
+  refresh-expiration: 10000000
 
 pay:
   callback:

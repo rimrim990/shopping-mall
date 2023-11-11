@@ -5,9 +5,9 @@ import com.gugucon.shopping.item.dto.request.CartItemUpdateRequest;
 import com.gugucon.shopping.item.dto.response.CartItemResponse;
 import com.gugucon.shopping.member.domain.vo.BirthYearRange;
 import com.gugucon.shopping.member.domain.vo.Gender;
-import com.gugucon.shopping.member.dto.request.LoginRequest;
+import com.gugucon.shopping.auth.dto.request.LoginRequest;
 import com.gugucon.shopping.member.dto.request.SignupRequest;
-import com.gugucon.shopping.member.dto.response.LoginResponse;
+import com.gugucon.shopping.auth.dto.response.LoginResponse;
 import com.gugucon.shopping.order.domain.PayType;
 import com.gugucon.shopping.order.dto.request.OrderPayRequest;
 import com.gugucon.shopping.order.dto.response.OrderDetailResponse;
@@ -44,11 +44,22 @@ public class ApiUtils {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/api/v1/login")
+                .when().post("/api/v1/auth/login")
                 .then().log().all()
                 .extract()
                 .as(LoginResponse.class)
                 .getAccessToken();
+    }
+
+    public static String getRefreshTokenAfterLogin(final String email, final String password) {
+        return RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(new LoginRequest(email, password))
+            .when().post("/api/v1/auth/login")
+            .then().log().all()
+            .extract()
+            .cookie("refreshToken");
     }
 
     public static void signup(final SignupRequest signupRequest) {

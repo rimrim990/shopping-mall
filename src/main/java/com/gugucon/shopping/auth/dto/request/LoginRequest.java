@@ -1,4 +1,4 @@
-package com.gugucon.shopping.member.dto.request;
+package com.gugucon.shopping.auth.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;

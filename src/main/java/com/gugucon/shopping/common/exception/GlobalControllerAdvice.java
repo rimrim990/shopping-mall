@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestCookieException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -50,6 +51,13 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMissingCookieException(final MissingRequestCookieException exception) {
+        final String missingCookieName = exception.getCookieName();
+        return ErrorResponse.of(ErrorCode.REQUIRED_COOKIE_MISSING, resolveCookieErrorMessage(missingCookieName));
+    }
+
+    @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleApplicationException(final ShoppingException exception) {
         final ErrorCode errorCode = exception.getErrorCode();
         if (errorCode.getStatus().is5xxServerError()) {
@@ -62,6 +70,10 @@ public class GlobalControllerAdvice {
         return exception.getFieldErrors().stream()
                 .map(this::resolveFieldErrorMessage)
                 .collect(Collectors.joining(", "));
+    }
+
+    private String resolveCookieErrorMessage(final String cookieName) {
+        return cookieName + " is missing";
     }
 
     private String resolveFieldErrorMessage(final FieldError error) {

@@ -24,6 +24,15 @@ public class JwtProvider {
                 .compact();
     }
 
+    public String generateRefreshToken() {
+        Date now = new Date(System.currentTimeMillis());
+        return Jwts.builder()
+            .setExpiration(new Date(now.getTime() + jwtConfig.getRefreshExpiration()))
+            .setIssuedAt(now)
+            .signWith(SignatureAlgorithm.HS256, jwtConfig.getSecretKey())
+            .compact();
+    }
+
     public boolean validate(final String token) {
         try {
             return Jwts.parser()

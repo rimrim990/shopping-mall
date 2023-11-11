@@ -28,6 +28,7 @@ management:
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   expiration: ${JWT_EXPIRATION}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION}
 
 pay:
   callback:

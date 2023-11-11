@@ -104,6 +104,12 @@ CREATE TABLE IF NOT EXISTS order_stats
     `last_modified_at` datetime              NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS refresh_token
+(
+    `member_id`        bigint               NOT NULL primary key references members(`id`),
+    `token`            varchar(255)         NOT NULL
+);
+
 create index idx_2 on orders (last_modified_at);
 create index idx_member_orders on orders (member_id);
 

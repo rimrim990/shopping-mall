@@ -5,7 +5,6 @@ import com.gugucon.shopping.auth.security.JwtAuthenticationEntryPoint;
 import com.gugucon.shopping.auth.security.JwtAuthenticationFilter;
 import com.gugucon.shopping.auth.security.JwtAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +34,7 @@ public class SecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/api/v1/**"))
             )
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(new AntPathRequestMatcher("/api/v1/login"),
+                .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/*"),
                                  new AntPathRequestMatcher("/api/v1/signup"),
                                  new AntPathRequestMatcher("/api/v1/products/**"),
                                  new AntPathRequestMatcher("/api/v1/rate/product/*"),
@@ -52,19 +51,8 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        return new JwtAuthenticationFilter(authenticationManager(authenticationConfiguration));
-    }
-
-    @Bean
-    public FilterRegistrationBean<JwtAuthenticationFilter> register(final JwtAuthenticationFilter authFilter) {
-        final FilterRegistrationBean<JwtAuthenticationFilter> registerBean = new FilterRegistrationBean<>(authFilter);
-        registerBean.setEnabled(false);
-        return registerBean;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(final AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+        final AuthenticationManager manager = authenticationConfiguration.getAuthenticationManager();
+        return new JwtAuthenticationFilter(manager);
     }
 
     @Bean

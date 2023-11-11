@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class JwtProviderTest {
 
-    private final JwtConfig jwtConfig = new JwtConfig("secretKey", 100_000_000L);
+    private final JwtConfig jwtConfig = new JwtConfig("secretKey", 100_000_000L, 200_000_000L);
     private final JwtProvider jwtProvider = new JwtProvider(jwtConfig);
 
     @Test

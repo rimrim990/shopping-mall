@@ -1,14 +1,15 @@
-package com.gugucon.shopping.member.service;
+package com.gugucon.shopping.auth.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import com.gugucon.shopping.auth.repository.RefreshTokenRepository;
 import com.gugucon.shopping.common.utils.JwtProvider;
 import com.gugucon.shopping.member.domain.entity.Member;
 import com.gugucon.shopping.member.domain.vo.Email;
 import com.gugucon.shopping.member.domain.vo.Password;
-import com.gugucon.shopping.member.dto.request.LoginRequest;
-import com.gugucon.shopping.member.dto.response.LoginResponse;
+import com.gugucon.shopping.auth.dto.request.LoginRequest;
+import com.gugucon.shopping.auth.dto.response.LoginResponse;
 import com.gugucon.shopping.member.repository.MemberRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -20,9 +21,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("UserService 단위 테스트")
-class MemberServiceTest {
+@DisplayName("AuthService 단위 테스트")
+class AuthServiceTest {
 
+    @Mock
+    private RefreshTokenRepository refreshTokenRepository;
     @Mock
     private MemberRepository memberRepository;
     @Mock
@@ -30,7 +33,7 @@ class MemberServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
     @InjectMocks
-    private MemberService memberService;
+    private AuthService authService;
 
     @Test
     @DisplayName("로그인한다.")
@@ -55,7 +58,7 @@ class MemberServiceTest {
         when(jwtProvider.generateToken(String.valueOf(memberId))).thenReturn(accessToken);
 
         /* when */
-        LoginResponse loginResponse = memberService.login(loginRequest);
+        LoginResponse loginResponse = authService.login(loginRequest);
 
         /* then */
         assertThat(loginResponse.getAccessToken()).isEqualTo(accessToken);

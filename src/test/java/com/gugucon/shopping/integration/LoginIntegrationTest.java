@@ -3,9 +3,10 @@ package com.gugucon.shopping.integration;
 import com.gugucon.shopping.common.exception.ErrorCode;
 import com.gugucon.shopping.common.exception.ErrorResponse;
 import com.gugucon.shopping.integration.config.IntegrationTest;
-import com.gugucon.shopping.member.dto.request.LoginRequest;
-import com.gugucon.shopping.member.dto.response.LoginResponse;
+import com.gugucon.shopping.auth.dto.request.LoginRequest;
+import com.gugucon.shopping.auth.dto.response.LoginResponse;
 import io.restassured.RestAssured;
+import io.restassured.http.Cookie;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
@@ -36,7 +37,7 @@ class LoginIntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/api/v1/login")
+                .when().post("/api/v1/auth/login")
                 .then().log().all()
                 .extract();
 
@@ -44,6 +45,31 @@ class LoginIntegrationTest {
         final LoginResponse loginResponse = response.as(LoginResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(loginResponse.getAccessToken()).isNotBlank();
+    }
+
+    @Test
+    @DisplayName("로그인에 성공하면 쿠키에 리프레시 토큰을 설정한다")
+    void login_refreshToken() {
+        /* given */
+        final String email = "test_email@woowafriends.com";
+        final String password = "test_password!";
+        signup(email, password);
+        LoginRequest loginRequest = new LoginRequest(email, password);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(loginRequest)
+            .when().post("/api/v1/auth/login")
+            .then().log().all()
+            .extract();
+
+        /* then */
+        final Cookie refreshToken = response.detailedCookie("refreshToken");
+        assertThat(refreshToken).isNotNull();
+        assertThat(refreshToken.isHttpOnly()).isTrue();
+        assertThat(refreshToken.getSameSite()).isEqualTo("Strict");
     }
 
     @Test
@@ -59,7 +85,7 @@ class LoginIntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/api/v1/login")
+                .when().post("/api/v1/auth/login")
                 .then().log().all()
                 .extract();
 
@@ -83,7 +109,7 @@ class LoginIntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/api/v1/login")
+                .when().post("/api/v1/auth/login")
                 .then().log().all()
                 .extract();
 
@@ -108,7 +134,7 @@ class LoginIntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/api/v1/login")
+                .when().post("/api/v1/auth/login")
                 .then().log().all()
                 .extract();
 
@@ -133,7 +159,7 @@ class LoginIntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/api/v1/login")
+                .when().post("/api/v1/auth/login")
                 .then().log().all()
                 .extract();
 

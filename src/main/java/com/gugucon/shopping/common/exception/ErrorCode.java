@@ -8,6 +8,7 @@ public enum ErrorCode {
 
     UNKNOWN_ERROR(INTERNAL_SERVER_ERROR, "알 수 없는 오류가 발생헀습니다."),
     REQUIRED_FIELD_MISSING(BAD_REQUEST, "필수 항목이 누락되었습니다."),
+    REQUIRED_COOKIE_MISSING(BAD_REQUEST, "필수 쿠키 항목이 누락되었습니다."),
     EMAIL_NOT_REGISTERED(BAD_REQUEST, "등록되지 않은 이메일입니다."),
     PASSWORD_NOT_CORRECT(BAD_REQUEST, "틀린 비밀번호 입니다."),
     INVALID_EMAIL_PATTERN(BAD_REQUEST, "유효하지 않은 이메일 형식입니다."),
@@ -18,6 +19,7 @@ public enum ErrorCode {
     NO_AUTHORIZATION_HEADER(UNAUTHORIZED, "인증 정보가 없습니다."),
     INVALID_TOKEN_TYPE(UNAUTHORIZED, "지원하는 토큰 타입이 아닙니다."),
     INVALID_TOKEN(UNAUTHORIZED, "유효한 토큰이 아닙니다."),
+    INVALID_REFRESH_TOKEN(UNAUTHORIZED, "유효한 리프레시 토큰이 아닙니다"),
     DUPLICATE_CART_ITEM(BAD_REQUEST, "장바구니에 이미 존재하는 상품입니다."),
     INVALID_QUANTITY(BAD_REQUEST, "장바구니 상품 수량은 1개 이상 1,000개 이하여야 합니다."),
     INVALID_MONEY(BAD_REQUEST, "금액은 0이상이어야 합니다"),
@@ -44,8 +46,7 @@ public enum ErrorCode {
     INVALID_ORDER_STATUS(BAD_REQUEST, "주문 상태가 올바르지 않습니다."),
     INVALID_BIRTH_DATE(BAD_REQUEST, "생년월일이 올바르지 않습니다."),
     INVALID_BIRTH_YEAR_RANGE(BAD_REQUEST, "지원하지 않는 나이대 조건입니다."),
-    INVALID_GENDER(BAD_REQUEST, "지원하지 않는 성별 조건입니다."),
-    ;
+    INVALID_GENDER(BAD_REQUEST, "지원하지 않는 성별 조건입니다.");
 
     private final HttpStatus status;
     private final String message;
