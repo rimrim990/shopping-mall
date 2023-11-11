@@ -1,6 +1,6 @@
 package com.gugucon.shopping.item.controller.api;
 
-import com.gugucon.shopping.auth.dto.MemberPrincipal;
+import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.item.dto.request.CartItemInsertRequest;
 import com.gugucon.shopping.item.dto.request.CartItemUpdateRequest;
 import com.gugucon.shopping.item.dto.response.CartItemResponse;

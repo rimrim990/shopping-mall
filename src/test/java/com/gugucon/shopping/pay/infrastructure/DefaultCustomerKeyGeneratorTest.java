@@ -3,6 +3,7 @@ package com.gugucon.shopping.pay.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gugucon.shopping.member.domain.entity.Member;
+import com.gugucon.shopping.pay.service.CustomerKeyGenerator;
 import com.gugucon.shopping.utils.DomainUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -6,7 +6,7 @@ import static com.gugucon.shopping.utils.DomainUtils.createOrderWithoutId;
 import static com.gugucon.shopping.utils.StatsUtils.createInitialOrderStat;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.gugucon.shopping.common.config.JpaConfig;
+import com.gugucon.shopping.config.JpaConfig;
 import com.gugucon.shopping.common.domain.vo.Quantity;
 import com.gugucon.shopping.item.domain.entity.OrderStat;
 import com.gugucon.shopping.item.domain.entity.Product;
@@ -103,11 +103,9 @@ class ProductRepositoryTest {
     }
 
     private void updateOrderStats(final Member member, final List<OrderItem> orderItems) {
-        orderItems.forEach(oi -> {
-            orderStatRepository.updateOrderStatByCount(oi.getQuantity().getValue(),
-                                                       oi.getProductId(),
-                                                       BirthYearRange.from(member.getBirthDate()),
-                                                       member.getGender());
-        });
+        orderItems.forEach(oi -> orderStatRepository.updateOrderStatByCount(oi.getQuantity().getValue(),
+                                                   oi.getProductId(),
+                                                   BirthYearRange.from(member.getBirthDate()),
+                                                   member.getGender()));
     }
 }

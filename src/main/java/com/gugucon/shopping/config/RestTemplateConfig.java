@@ -1,4 +1,4 @@
-package com.gugucon.shopping.common.config;
+package com.gugucon.shopping.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

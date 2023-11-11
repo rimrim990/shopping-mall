@@ -1,6 +1,6 @@
 package com.gugucon.shopping.order.service;
 
-import com.gugucon.shopping.common.config.JpaConfig;
+import com.gugucon.shopping.config.JpaConfig;
 import com.gugucon.shopping.common.exception.ErrorCode;
 import com.gugucon.shopping.common.exception.ShoppingException;
 import com.gugucon.shopping.member.domain.entity.Member;

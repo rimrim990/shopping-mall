@@ -1,4 +1,4 @@
-package com.gugucon.shopping.pay.infrastructure;
+package com.gugucon.shopping.pay.service;
 
 public interface OrderIdTranslator {
 

@@ -1,7 +1,7 @@
-package com.gugucon.shopping.member.config;
+package com.gugucon.shopping.config;
 
-import com.gugucon.shopping.member.infrastructure.converter.StringToBirthYearRangeConverter;
-import com.gugucon.shopping.member.infrastructure.converter.StringToGenderConverter;
+import com.gugucon.shopping.member.controlller.converter.StringToBirthYearRangeConverter;
+import com.gugucon.shopping.member.controlller.converter.StringToGenderConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

@@ -1,4 +1,4 @@
-package com.gugucon.shopping.common.config;
+package com.gugucon.shopping.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

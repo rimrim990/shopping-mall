@@ -1,6 +1,6 @@
 package com.gugucon.shopping.order.controller.api;
 
-import com.gugucon.shopping.auth.dto.MemberPrincipal;
+import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.order.dto.request.OrderPayRequest;
 import com.gugucon.shopping.order.dto.response.OrderDetailResponse;
 import com.gugucon.shopping.order.dto.response.OrderPayResponse;

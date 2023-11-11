@@ -1,6 +1,6 @@
 package com.gugucon.shopping.rate.service;
 
-import com.gugucon.shopping.auth.dto.MemberPrincipal;
+import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.common.exception.ErrorCode;
 import com.gugucon.shopping.common.exception.ShoppingException;
 import com.gugucon.shopping.item.repository.ProductRepository;

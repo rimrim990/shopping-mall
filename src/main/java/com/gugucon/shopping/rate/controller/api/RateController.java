@@ -1,6 +1,6 @@
 package com.gugucon.shopping.rate.controller.api;
 
-import com.gugucon.shopping.auth.dto.MemberPrincipal;
+import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.rate.dto.request.RateCreateRequest;
 import com.gugucon.shopping.rate.dto.response.GroupRateResponse;
 import com.gugucon.shopping.rate.dto.response.RateDetailResponse;

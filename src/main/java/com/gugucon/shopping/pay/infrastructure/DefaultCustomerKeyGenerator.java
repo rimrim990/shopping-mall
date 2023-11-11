@@ -1,5 +1,6 @@
 package com.gugucon.shopping.pay.infrastructure;
 
+import com.gugucon.shopping.pay.service.CustomerKeyGenerator;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
 

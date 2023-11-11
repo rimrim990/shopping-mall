@@ -1,4 +1,4 @@
-package com.gugucon.shopping.pay.controller;
+package com.gugucon.shopping.pay.controller.page;
 
 import com.gugucon.shopping.pay.dto.request.TossPayFailRequest;
 import com.gugucon.shopping.pay.dto.request.TossPayRequest;

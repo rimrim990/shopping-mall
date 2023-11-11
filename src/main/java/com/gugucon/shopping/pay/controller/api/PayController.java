@@ -1,6 +1,6 @@
-package com.gugucon.shopping.pay.controller;
+package com.gugucon.shopping.pay.controller.api;
 
-import com.gugucon.shopping.auth.dto.MemberPrincipal;
+import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.pay.dto.request.PointPayRequest;
 import com.gugucon.shopping.pay.dto.request.TossPayFailRequest;
 import com.gugucon.shopping.pay.dto.request.TossPayRequest;

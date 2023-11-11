@@ -2,17 +2,24 @@ package com.gugucon.shopping.pay.infrastructure;
 
 import com.gugucon.shopping.common.exception.ErrorCode;
 import com.gugucon.shopping.common.exception.ShoppingException;
-import com.gugucon.shopping.pay.dto.request.TossPayRequest;
+import com.gugucon.shopping.pay.dto.request.PayRequest;
 import com.gugucon.shopping.pay.infrastructure.dto.TossValidationRequest;
 import com.gugucon.shopping.pay.infrastructure.dto.TossValidationResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
-
+import com.gugucon.shopping.pay.service.PayValidator;
 import java.util.Base64;
 import java.util.Base64.Encoder;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
+@Component
 public final class TossPayValidator implements PayValidator {
 
     private static final String VALIDATE_URL = "https://api.tosspayments.com/v1/payments/confirm";
@@ -21,7 +28,7 @@ public final class TossPayValidator implements PayValidator {
     private final RestTemplate restTemplate;
     private final HttpHeaders httpHeaders;
 
-    public TossPayValidator(final RestTemplate restTemplate, final String secretKey) {
+    public TossPayValidator(final RestTemplate restTemplate, @Value("${pay.toss.secret-key}") final String secretKey) {
         this.restTemplate = restTemplate;
         this.httpHeaders = new HttpHeaders();
         setHeaderForConnect(secretKey);
@@ -34,10 +41,10 @@ public final class TossPayValidator implements PayValidator {
     }
 
     @Override
-    public void validatePayment(final TossPayRequest tossPayRequest) {
-        final TossValidationRequest tossValidationRequest = TossValidationRequest.of(tossPayRequest);
-        final HttpEntity<TossValidationRequest> request = new HttpEntity<>(tossValidationRequest, httpHeaders);
-        log.info("toss validation request sent for orderId: {}", tossPayRequest.getOrderId());
+    public void validatePayment(final PayRequest payRequest) {
+        final TossValidationRequest payValidationRequest = TossValidationRequest.of(payRequest);
+        final HttpEntity<TossValidationRequest> request = new HttpEntity<>(payValidationRequest, httpHeaders);
+        log.info("toss validation request sent for orderId: {}", payRequest.getOrderId());
         final ResponseEntity<TossValidationResponse> response = restTemplate.postForEntity(VALIDATE_URL,
                                                                                            request,
                                                                                            TossValidationResponse.class);

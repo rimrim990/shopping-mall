@@ -1,6 +1,6 @@
 package com.gugucon.shopping.point.controller;
 
-import com.gugucon.shopping.auth.dto.MemberPrincipal;
+import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.point.dto.request.PointChargeRequest;
 import com.gugucon.shopping.point.dto.response.PointResponse;
 import com.gugucon.shopping.point.service.PointService;

@@ -1,6 +1,6 @@
 package com.gugucon.shopping.point.service;
 
-import com.gugucon.shopping.common.config.JpaConfig;
+import com.gugucon.shopping.config.JpaConfig;
 import com.gugucon.shopping.common.domain.vo.Money;
 import com.gugucon.shopping.member.domain.entity.Member;
 import com.gugucon.shopping.member.repository.MemberRepository;

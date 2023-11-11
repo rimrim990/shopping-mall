@@ -2,6 +2,7 @@ package com.gugucon.shopping.member.infrastructure.converter;
 
 import com.gugucon.shopping.common.exception.ErrorCode;
 import com.gugucon.shopping.common.exception.ShoppingException;
+import com.gugucon.shopping.member.controlller.converter.StringToGenderConverter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

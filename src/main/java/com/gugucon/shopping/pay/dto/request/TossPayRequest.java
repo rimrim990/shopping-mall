@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public final class TossPayRequest {
+public final class TossPayRequest implements PayRequest {
 
     private final String paymentKey;
     private final String orderId;

@@ -2,11 +2,14 @@ package com.gugucon.shopping.pay.infrastructure;
 
 import com.gugucon.shopping.common.exception.ErrorCode;
 import com.gugucon.shopping.common.exception.ShoppingException;
+import com.gugucon.shopping.pay.service.OrderIdTranslator;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.Base64.Encoder;
+import org.springframework.stereotype.Component;
 
+@Component
 public final class OrderIdBase64Translator implements OrderIdTranslator {
 
     private static final String DELIMITER = "--";

@@ -1,6 +1,6 @@
 package com.gugucon.shopping.order.controller.api;
 
-import com.gugucon.shopping.auth.dto.MemberPrincipal;
+import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.common.dto.response.PagedResponse;
 import com.gugucon.shopping.order.dto.response.OrderHistoryResponse;
 import com.gugucon.shopping.order.service.OrderService;

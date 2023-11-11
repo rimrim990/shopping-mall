@@ -1,4 +1,4 @@
-package com.gugucon.shopping.auth.dto;
+package com.gugucon.shopping.member.dto;
 
 import com.gugucon.shopping.member.domain.entity.Member;
 import com.gugucon.shopping.member.domain.vo.Email;

@@ -1,12 +1,12 @@
 package com.gugucon.shopping.pay.service;
 
-import com.gugucon.shopping.auth.dto.MemberPrincipal;
 import com.gugucon.shopping.common.domain.vo.Money;
 import com.gugucon.shopping.common.exception.ErrorCode;
 import com.gugucon.shopping.common.exception.ShoppingException;
+import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.order.domain.entity.Order;
 import com.gugucon.shopping.order.service.OrderService;
-import com.gugucon.shopping.pay.config.TossPayConfiguration;
+import com.gugucon.shopping.pay.config.TossPayConfig;
 import com.gugucon.shopping.pay.domain.Pay;
 import com.gugucon.shopping.pay.dto.request.PointPayRequest;
 import com.gugucon.shopping.pay.dto.request.TossPayFailRequest;
@@ -14,7 +14,6 @@ import com.gugucon.shopping.pay.dto.request.TossPayRequest;
 import com.gugucon.shopping.pay.dto.response.PayResponse;
 import com.gugucon.shopping.pay.dto.response.TossPayFailResponse;
 import com.gugucon.shopping.pay.dto.response.TossPayInfoResponse;
-import com.gugucon.shopping.pay.infrastructure.TossPayProvider;
 import com.gugucon.shopping.pay.repository.PayRepository;
 import com.gugucon.shopping.point.domain.Point;
 import com.gugucon.shopping.point.repository.PointRepository;
@@ -29,8 +28,10 @@ public class PayService {
 
     private final PayRepository payRepository;
     private final PointRepository pointRepository;
-    private final TossPayProvider tossPayProvider;
-    private final TossPayConfiguration tossPayConfiguration;
+    private final PayValidator payValidator;
+    private final OrderIdTranslator orderIdTranslator;
+    private final CustomerKeyGenerator customerKeyGenerator;
+    private final TossPayConfig tossPayConfig;
     private final OrderService orderService;
 
     @Transactional
@@ -56,16 +57,16 @@ public class PayService {
         final Order order = orderService.findOrderBy(orderId, memberId);
         order.validateNotCanceled();
 
-        return TossPayInfoResponse.from(tossPayProvider.encodeOrderId(order.getId(), order.createOrderName()),
+        return TossPayInfoResponse.from(orderIdTranslator.encode(order.getId(), order.createOrderName()),
                                         order,
-                                        tossPayProvider.generateCustomerKey(memberId),
-                                        tossPayConfiguration.getSuccessUrl(),
-                                        tossPayConfiguration.getFailUrl());
+                                        customerKeyGenerator.generate(memberId),
+                                        tossPayConfig.getSuccessUrl(),
+                                        tossPayConfig.getFailUrl());
     }
 
     @Transactional
     public PayResponse payByToss(final TossPayRequest tossPayRequest, final MemberPrincipal principal) {
-        final Long orderId = tossPayProvider.decodeOrderId(tossPayRequest.getOrderId());
+        final Long orderId = orderIdTranslator.decode(tossPayRequest.getOrderId());
         final Long memberId = principal.getId();
         final Order order = orderService.findOrderByExclusively(orderId, memberId);
 
@@ -73,13 +74,13 @@ public class PayService {
         order.validateMoney(Money.from(tossPayRequest.getAmount()));
         orderService.complete(order, principal);
         final Pay pay = payRepository.save(Pay.from(order));
-        tossPayProvider.validatePayment(tossPayRequest);
+        payValidator.validatePayment(tossPayRequest);
 
         return PayResponse.from(pay);
     }
 
     public TossPayFailResponse decodeOrderId(final TossPayFailRequest tossPayFailRequest) {
-        final Long orderId = tossPayProvider.decodeOrderId(tossPayFailRequest.getOrderId());
+        final Long orderId = orderIdTranslator.decode(tossPayFailRequest.getOrderId());
         return TossPayFailResponse.from(orderId);
     }
 }

@@ -1,6 +1,6 @@
 package com.gugucon.shopping.auth.domain.vo;
 
-import com.gugucon.shopping.auth.dto.MemberPrincipal;
+import com.gugucon.shopping.member.dto.MemberPrincipal;
 import java.util.Collection;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

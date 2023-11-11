@@ -1,4 +1,4 @@
-package com.gugucon.shopping.member.infrastructure.converter;
+package com.gugucon.shopping.member.controlller.converter;
 
 
 import com.gugucon.shopping.common.exception.ErrorCode;
