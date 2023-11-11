@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
-@Import(value = {OrderService.class, JpaConfig.class})
+@Import(value = {OrderService.class, OrderStatService.class, JpaConfig.class})
 @DisplayName("OrderService 통합 테스트")
 class OrderServiceTest {
 

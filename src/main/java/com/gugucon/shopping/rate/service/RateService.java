@@ -1,11 +1,10 @@
 package com.gugucon.shopping.rate.service;
 
-import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.common.exception.ErrorCode;
 import com.gugucon.shopping.common.exception.ShoppingException;
 import com.gugucon.shopping.item.repository.ProductRepository;
-import com.gugucon.shopping.item.repository.RateStatRepository;
 import com.gugucon.shopping.member.domain.vo.BirthYearRange;
+import com.gugucon.shopping.member.dto.MemberPrincipal;
 import com.gugucon.shopping.order.domain.entity.Order.OrderStatus;
 import com.gugucon.shopping.order.domain.entity.OrderItem;
 import com.gugucon.shopping.order.repository.OrderItemRepository;
@@ -17,12 +16,11 @@ import com.gugucon.shopping.rate.dto.response.RateResponse;
 import com.gugucon.shopping.rate.repository.RateRepository;
 import com.gugucon.shopping.rate.repository.dto.AverageRateDto;
 import com.gugucon.shopping.rate.repository.dto.GroupAverageRateDto;
+import java.util.Comparator;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Comparator;
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -32,10 +30,10 @@ public class RateService {
     private static final short MIN_SCORE = 1;
     private static final short MAX_SCORE = 5;
 
+    private final RateStatService rateStatService;
     private final RateRepository rateRepository;
     private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
-    private final RateStatRepository rateStatRepository;
 
     @Transactional
     public void createRate(final MemberPrincipal principal, final RateCreateRequest request) {
@@ -51,10 +49,7 @@ public class RateService {
                 .build();
 
         rateRepository.save(rate);
-        rateStatRepository.updateRateStatByScore(score,
-                                                 orderItem.getProductId(),
-                                                 BirthYearRange.from(principal.getBirthDate()),
-                                                 principal.getGender());
+        rateStatService.updateRate(principal, score, orderItem.getProductId());
     }
 
     public RateResponse getRates(final Long productId) {

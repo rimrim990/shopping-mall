@@ -7,11 +7,8 @@ import com.gugucon.shopping.common.exception.ShoppingException;
 import com.gugucon.shopping.item.domain.entity.CartItem;
 import com.gugucon.shopping.item.domain.entity.Product;
 import com.gugucon.shopping.item.repository.CartItemRepository;
-import com.gugucon.shopping.item.repository.OrderStatRepository;
 import com.gugucon.shopping.item.repository.ProductRepository;
-import com.gugucon.shopping.member.domain.vo.BirthYearRange;
 import com.gugucon.shopping.order.domain.entity.Order;
-import com.gugucon.shopping.order.domain.entity.OrderItem;
 import com.gugucon.shopping.order.dto.request.OrderPayRequest;
 import com.gugucon.shopping.order.dto.response.OrderDetailResponse;
 import com.gugucon.shopping.order.dto.response.OrderHistoryResponse;
@@ -32,10 +29,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
 
+    private final OrderStatService orderStatService;
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
-    private final OrderStatRepository orderStatRepository;
 
     @Transactional
     public OrderResponse order(final Long memberId) {
@@ -47,7 +44,7 @@ public class OrderService {
 
     @Transactional
     public void complete(final Order order, final MemberPrincipal principal) {
-        order.getOrderItems().forEach(orderItem -> updateOrderStatBy(principal, orderItem));
+        order.getOrderItems().forEach(orderItem -> orderStatService.updateCount(principal, orderItem));
         cartItemRepository.deleteAllByMemberId(principal.getId());
         order.completePay();
     }
@@ -114,12 +111,5 @@ public class OrderService {
             product.validateStockIsNotLessThan(orderItem.getQuantity());
             product.decreaseStockBy(orderItem.getQuantity());
         });
-    }
-
-    private void updateOrderStatBy(final MemberPrincipal principal, final OrderItem orderItem) {
-        orderStatRepository.updateOrderStatByCount(orderItem.getQuantity().getValue(),
-                                                   orderItem.getProductId(),
-                                                   BirthYearRange.from(principal.getBirthDate()),
-                                                   principal.getGender());
     }
 }
