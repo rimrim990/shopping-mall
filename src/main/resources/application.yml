@@ -36,3 +36,6 @@ pay:
     success-url: ${PAY_CALLBACK_SUCCESS_URL}
   toss:
     secret-key: ${PAY_TOSS_SECRET_KEY}
+
+resource:
+  version: v1.0.0

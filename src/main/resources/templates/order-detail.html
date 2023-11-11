@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="${@mvcResourceUrlProvider.getForLookupPath('/css/index.css')}" />
     <title>ZI구ZA구</title>
 </head>
 <body>
@@ -124,7 +124,7 @@
             `<button class="primary-button flex-center pay-button" onclick="putOrder(${orderId}, 'TOSS')">결제하기</button>`
     }
 </script>
-<script th:src="@{/js/point.js}"></script>
+<script th:src="${@mvcResourceUrlProvider.getForLookupPath('/js/point.js')}"></script>
 <script th:inline="javascript">
     document.addEventListener("DOMContentLoaded", () => getPointBalance("totalPoint"));
 </script>

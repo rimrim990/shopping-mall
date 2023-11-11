@@ -19,8 +19,8 @@
         </div>
     </section>
 </div>
-<script th:src="@{/js/cart.js}"></script>
-<script th:src="@{/js/order.js}"></script>
+<script th:src="${@mvcResourceUrlProvider.getForLookupPath('/js/cart.js')}"></script>
+<script th:src="${@mvcResourceUrlProvider.getForLookupPath('/js/order.js')}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const credentials = localStorage.getItem('accessToken');
